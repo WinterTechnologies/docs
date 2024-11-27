@@ -1,0 +1,78 @@
+---
+icon: "rocket"
+---
+
+It's reccomeneded to have at least basic knowledge of [docker](https://docker.com)
+before continuing as it is heavily used in the deployment of Winter HR.
+
+## Quickstart
+
+<Warning>
+  Please make sure you have [docker](https://docker.com) & [docker
+  compose](https://docs.docker.com/compose/) installed before continuing. More
+  information on how to do so is available on their
+  [documentation](https://docs.docker.com)
+</Warning>
+
+To get started, clone the git repo using the command below:
+
+```bash
+git clone https://github.com/wintertechnologies/hr --depth 1 winterhr
+```
+
+After that, cd into your newly cloned git repo:
+
+```bash
+cd winterhr
+```
+
+## Configuration
+
+The configuration is done mostly though the admin ui and database, but some things (e.g. database) need to be configured
+using a .env file. The `compose.yml` file is already setup to use a .env file, so lets make one.
+
+Clone the .env.example
+
+```bash
+cp .env.example .env
+```
+
+After cloning, open the .env file using an editor (e.g. vscode, nvim, etc..). In my case I'm using neovim.
+
+```bash
+nvim .env
+```
+
+Inside the .env file, you will need to set the following variables:
+
+- `DATABASE_URL` - The database url, this is the default value for the docker compose file
+- `DATABASE_NAME` - The database name
+- `DATABASE_USERNAME` - The database username
+- `DATABASE_PASSWORD` - The database password
+- `DATABASE_HOST` - The database host
+- `DATABASE_PORT` - The database port
+
+Then save the file!
+
+## Build
+
+Before we can deploy, we need to build the docker images as we do not provide them.
+
+```bash
+docker build -t winterhr:latest .
+```
+
+This command will take a few minutes. Once completed, you can continue to deployment.
+
+# Deployment
+
+After building, it's quite simple to deploy a docker compose file. Just run the following command.
+
+```bash
+docker compose up -d # -d means detached, so it will run in the background.
+```
+
+This will start the following services:
+
+- winterhr-postgres - A postgres database
+- winterhr-frontend - The nextjs frontend
