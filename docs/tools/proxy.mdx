@@ -1,0 +1,70 @@
+---
+title: Discord Webhook Proxy
+---
+
+# Winter Proxy
+
+Winter Proxy is a free and open source discord webhook proxy. It is designed
+for Roblox developers who want to use Discord webhooks, as Discord blocks
+all webhook requests that come from Roblox servers. Currently, Winter Proxy isn't
+hosted by us, you have to host it yourself, but it is something we are looking
+to do in the near future.
+
+The difference between Winter Proxy and other proxies is that it is designed
+for private use, you can host your own instance, and it has authentication
+features built in that stop anyone from abusing it. If you would like to host a
+public one, it's also fully possible to do that just by setting `AUTH_ENABLED`
+to `false` inside your .env file.
+
+## Deployment
+
+### Vercel
+
+The quickest way to deploy Winter Proxy is to use [Vercel](https://vercel.com).
+Vercel offer a free Hobby tier for developers, which may be enough for you
+depending on how much you use it. You can deploy it by clicking the button below:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fwintertechnologies%2Fproxy&env=API_TOKEN,AUTH_ENABLED&envDescription=API_TOKEN%20is%20used%20if%20you%20have%20AUTH_ENABLED%20set%20to%20true.%20If%20you%20don't%20want%20authentication%2C%20set%20AUTH_ENABLED%20to%20false.&project-name=winter-proxy&repository-name=winter-proxy)
+
+To generate your `API_TOKEN`, I reccomend using openssl. This will generate a 32
+byte long random string for you to use.
+
+```bash
+openssl rand -base64 32
+```
+
+For more info about authentication, see the [Authentication](#authentication) section.
+
+### Self hosted
+
+Self hosting Winter Proxy is not too complicated, but you will require a decent
+amount of knowledge about Docker, NextJS, and whatever OS you're using (probably linux if on a server).
+Here are the rough steps you'll need to follow:
+
+1. Clone the repo
+2. Build the nextjs app (`pnpm run build`)
+3. Build the docker image (`docker build -t winter-proxy .`)
+4. Run the docker image (`docker run -p 3000:3000 -e AUTH_ENABLED=true -e API_TOKEN=<API_TOKEN> winter-proxy`)
+
+You can now access the web ui at `http://localhost:3000/`, and the API at `http://localhost:3000/api/webhooks/<WEBHOOK_ID>/<WEBHOOK_TOKEN>`
+
+For more info about docker, see [their docs](https://docs.docker.com/get-started/docker-overview/).
+
+## Usage
+
+To use Winter Proxy after deployment, copy your webhook url from discord, and replace
+`discord.com` with the URL of your server. There is also a convenient web UI for
+quickly converting URLs.
+
+### Authentication
+
+If you have authentication enabled, you will need to add the `winterapitoken` key
+to the body of your request. Set the value to the API key you set during deployment.
+Here's an example json body:
+
+```json
+{
+  "content": "Hello from Winter Proxy!",
+  "winterapitoken": "<API_TOKEN>"
+}
+```
