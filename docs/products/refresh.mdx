@@ -1,0 +1,34 @@
+---
+title: Winter Refresh
+---
+
+Winter Refresh is an advanced drink serving machine. It has a couple of
+config options.
+
+## Configuration
+
+By default, you shoud have this config:
+
+```lua
+return {
+    ["PourTime"] = 5, -- Total time each pour will take. NOTE: SFX will not update with this.
+    ["Debug"] = true, -- Logs certain things to the console. Reccomended to be false unless having issues.
+    ["LedFlash"] = true, -- Whether or not LED flashing is on. Decoration only.
+}
+```
+
+- `PourTime` - The total time each pour will take. The SFX will not update to match this.
+- `Debug` - Logs things to the console. Reccomended if having issues.
+- `LedFlash` - Decoration only. Controls the flashing of the LEDs on the front.
+
+## Adding Drinks
+
+To add drinks, please look inside: `Screen > Screen > SurfaceGui > Wrapper > Drinks > DrinksGrid`
+
+Duplicate one of the existing drinks. Drink name is taken from
+the name of the button. The drink colour is an attribute called `DrinkColour`,
+on each button. You will need to create an image.
+
+:::warning
+The button needs to be an ImageButton. This script does not support TextButtons.
+:::
